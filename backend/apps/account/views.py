@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from drf_spectacular.utils import extend_schema
 from .serializers import (
     serializers,
     RegisterSerializer,
@@ -15,27 +16,22 @@ from .serializers import (
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
+@extend_schema(request=RegisterSerializer, responses=UserSerializer)
 # Create your views here.
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
-
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
-
-            return Response(
-                {
-                    "massege": "User registered successfully.",
-                    "user": UserSerializer(user).data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
 
         return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST,
+            {
+                "massege": "User registered successfully.",
+                "user": UserSerializer(user).data,
+            },
+            status=status.HTTP_201_CREATED,
         )
 
 

@@ -101,10 +101,10 @@ class ProjectProgressRetrieveUpdateDestroyAPIView(
 class ProjectProgressImageCreateAPIView(generics.CreateAPIView):
     queryset = ProjectProgressImage.objects.all()
     serializer_class = ProjectProgressImageSerializer
-    permission_classes = [IsAdminUser()]
+    permission_classes = [IsAdminUser]
 
 
 class ProjectProgressVideoCreateAPIView(generics.CreateAPIView):
     queryset = ProjectProgressVideo.objects.all()
     serializer_class = ProjectProgressVideoSerializer
-    permission_classes = [IsAdminUser()]
+    permission_classes = [IsAdminUser]
